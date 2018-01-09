@@ -10,7 +10,7 @@ if ($conn->connect_error)
 {
   die ("Błąd przy łaczeniu z bazą" . $conn->connect_error);
 }
-else
-{
-  echo "Połączenie z bazą udane :) <br>";
-}
+//else
+//{
+//  echo "Połączenie z bazą udane :) <br>";
+//}
