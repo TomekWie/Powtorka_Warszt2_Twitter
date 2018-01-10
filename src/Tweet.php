@@ -39,19 +39,95 @@ class Tweet
   public function setCreationDate($creationDate)
   {$this->creationDate = $creationDate;}
 
+  public function saveToDB(mysqli $conn)
+  {
+    if($this->id == -1)
+    {
+      $sql = "INSERT INTO Tweets (userId, text, creation_date) VALUES ('$this->userId', '$this->text', '$this->creationDate')";
+
+      $result = $conn->query($sql);
+      if ($result==true)
+      {
+        $this->id = $conn->insert_id;
+        return true;
+      }
+    }
+    echo "Błąd " . $conn->error;
+    return false;
+  }
+
+  static public function loadTweetById (mysqli $conn, $id)
+  {
+    $sql = "SELECT * FROM Tweets WHERE id = $id";
+    $result = $conn->query($sql);
+    if ($result==true && $result->num_rows == 1)
+    {
+      $row = $result->fetch_assoc();
+      $tweet = new Tweet();
+      $tweet->id = $row['id'];
+      $tweet->setText($row['text']);
+      $tweet->setUserId($row['userId']);
+      $tweet->setCreationDate($row['creation_date']);
+
+      return $tweet;
+    }
+    return null;
+  }
+
+  static public function loadAllTweetsByUserId(mysqli $conn, $userId)
+  {
+    $userTweets = [];
+    $sql = "SELECT * FROM Tweets WHERE userId = $userId";
+    $result = $conn->query($sql);
+
+    if ($result==true && $result->num_rows != 0)
+    {
+      foreach ($result as $row)
+      {
+        $tweet= new Tweet();
+        $tweet->id = $row['id'];
+        $tweet->setText($row['text']);
+        $tweet->setUserId($row['userId']);
+        $tweet->setCreationDate($row['creation_date']);
+
+        $userTweets[] = $tweet;
+      }
+    }
+    return $userTweets;
+  }
+
+  static public function loadAllTweets(mysqli $conn)
+  {
+    $sql = "SELECT * FROM Tweets";
+    $result = $conn->query($sql);
+    $allTweets = [];
+
+    if ($result ==  true && $result->num_rows != 0)
+    {
+      foreach ($result as $row)
+      {
+        $tweet = new Tweet();
+        $tweet->id = $row['id'];
+        $tweet->userId = $row['userId'];
+        $tweet->text = $row['text'];
+        $tweet->creationDate = $row['creation_date'];
+
+        $allTweets[] = $tweet;
+      }
+    }
+    return $allTweets;
+  }
 }
 
-// $tweet1 = new Tweet();
-// var_dump($tweet1);
-// echo $tweet1->getId();
-// echo $tweet1->getUserId();
-// echo $tweet1->getText();
-// echo $tweet1->getCreationDate();
-// $tweet1->setUserId(24);
-// $tweet1->setText('IV episode of Star Wars sucks!');
-// $tweet1->setCreationDate(date("Y-m-d H:i:s"));
-// var_dump($tweet1);
-// echo $tweet1->getId();
-// echo $tweet1->getUserId();
-// echo $tweet1->getText();
-// echo $tweet1->getCreationDate();
+// $tweet = new Tweet();
+// $tweet->setUserId(11);
+// $tweet->setText('Wszystkie wakacyjne miłości informuję, że nie jestem już zainteresowana!');
+// $tweet->setCreationDate(date("Y-m-d H:i:s"));
+// var_dump($tweet);
+// echo $tweet->getId();
+// echo $tweet->getUserId();
+// echo $tweet->getText();
+// echo $tweet->getCreationDate();
+// $tweet->saveToDB($conn);
+
+var_dump(Tweet::loadAllTweets($conn));
