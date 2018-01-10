@@ -77,6 +77,22 @@ class User
     }
     return false;
   }
+  
+  public function delete(mysqli $connection)
+  {
+    if ($this->id != -1)
+    {
+      $sql = "DELETE FROM `Users` WHERE `id`='$this->id'";
+      $result=$connection->query($sql);
+      if($result==true)
+      {
+        $this->id = -1;
+        return true;
+      }
+      return false;
+    }
+    return true;
+  }
 
   static public function loadUserById(mysqli $connection, $id)
   {
@@ -120,19 +136,4 @@ class User
     return $usersArr;
   }
 
-  public function delete(mysqli $connection)
-  {
-    if ($this->id != -1)
-    {
-      $sql = "DELETE FROM `Users` WHERE `id`='$this->id'";
-      $result=$connection->query($sql);
-      if($result==true)
-      {
-        $this->id = -1;
-        return true;
-      }
-      return false;
-    }
-    return true;
-  }
 }
