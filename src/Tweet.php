@@ -98,7 +98,7 @@ class Tweet
 
   static public function loadAllTweets(mysqli $conn)
   {
-    $sql = "SELECT * FROM Tweets";
+    $sql = "SELECT * FROM Tweets ORDER BY creation_date DESC";
     $result = $conn->query($sql);
     $allTweets = [];
 
@@ -121,13 +121,13 @@ class Tweet
 
 // $tweet = new Tweet();
 // $tweet->setUserId(11);
-// $tweet->setText('Wszystkie wakacyjne miłości informuję, że nie jestem już zainteresowana!');
+// $tweet->setText('#ŻyjeSięRaz!');
 // $tweet->setCreationDate(date("Y-m-d H:i:s"));
-// var_dump($tweet);
-// echo $tweet->getId();
-// echo $tweet->getUserId();
-// echo $tweet->getText();
-// echo $tweet->getCreationDate();
+// // var_dump($tweet);
+// // echo $tweet->getId();
+// // echo $tweet->getUserId();
+// // echo $tweet->getText();
+// // echo $tweet->getCreationDate();
 // $tweet->saveToDB($conn);
 
-var_dump(Tweet::loadAllTweets($conn));
+//var_dump(Tweet::loadAllTweets($conn));

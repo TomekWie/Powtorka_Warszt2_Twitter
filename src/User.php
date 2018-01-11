@@ -77,7 +77,7 @@ class User
     }
     return false;
   }
-  
+
   public function delete(mysqli $connection)
   {
     if ($this->id != -1)
@@ -97,6 +97,26 @@ class User
   static public function loadUserById(mysqli $connection, $id)
   {
     $sql = "SELECT * FROM `Users` WHERE `id`=$id";
+    $result = $connection->query($sql);
+
+    if ($result == true && $result->num_rows==1)
+    {
+      $row = $result->fetch_assoc();
+
+      $loadedUser = new User;
+      $loadedUser->username = $row['username'];
+      $loadedUser->email = $row['email'];
+      $loadedUser->hashedPassword = $row['hashed_password'];
+      $loadedUser->id = $row['id'];
+
+      return $loadedUser;
+    }
+    return null;
+  }
+
+  static public function loadUserByEmail(mysqli $connection, $email)
+  {
+    $sql = "SELECT * FROM `Users` WHERE `email`= $email";
     $result = $connection->query($sql);
 
     if ($result == true && $result->num_rows==1)
@@ -135,5 +155,10 @@ class User
     }
     return $usersArr;
   }
-
 }
+
+// $u = new User();
+// $u->setUsername('a');
+// $u->setEmail('a@a');
+// $u->setHashedPassword('aaa');
+// $u->saveToDB($conn);
