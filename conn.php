@@ -3,7 +3,7 @@
 $server = 'localhost';
 $user = 'root';
 $pass = 'coderslab';
-$dbName = 'Powtorka_Warszt2_Twitter';
+$dbName = 'PowtorkaWarszt2Twitter';
 
 $conn = new mysqli($server, $user, $pass, $dbName);
 if ($conn->connect_error)

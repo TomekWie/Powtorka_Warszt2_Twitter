@@ -64,13 +64,13 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
   {
     $userId = $singleTweet->getUserId();
     $text = $singleTweet->getText();
-    $creationDate = $singleTweet->getCreationDate();
+    $tweetId = $singleTweet->getId();
     $user = User::loadUserById($conn, $userId);
-    $userName = $user->getUsername();
+    $username = $user->getUsername();
 
-    echo "<h3>Autor: $userName </h3> ";
+    echo "<h3>Autor:<a href='singleUser.php?userId=$userId'> $username </a></h3> ";
     echo "<div> $text <div>";
-    echo "<div> $creationDate </div><hr>";
+    echo "<div> <a href='singleTweet.php?tweetId=$tweetId'>Zobacz więcej</a></div><hr>";
   }
   ?>
 

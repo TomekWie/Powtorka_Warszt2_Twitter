@@ -44,7 +44,7 @@ class User
   {
     if($this->id == -1)
     {
-      $sql = "INSERT INTO `Users` (`username`, `hashed_password`, `email`)
+      $sql = "INSERT INTO `User` (`username`, `hashedPassword`, `email`)
       VALUES ('$this->username', '$this->hashedPassword', '$this->email')";
 
       $result = $connection->query($sql);
@@ -56,15 +56,15 @@ class User
       }
       else
       {
-        echo "Błąd podczas zapisywania nowego Usera do bazy: " . $connection->error;
+        echo "Błąd podczas zapisywania nowego usera do bazy: " . $connection->error;
       }
     }
     else
     {
-      $sql = "UPDATE `Users`
+      $sql = "UPDATE `User`
               SET `email`='$this->email',
                   `username`='$this->username',
-                  `hashed_password`='$this->hashedPassword'
+                  `hashedPassword`='$this->hashedPassword'
               WHERE `id`='$this->id'";
 
       $result=$connection->query($sql);
@@ -82,7 +82,7 @@ class User
   {
     if ($this->id != -1)
     {
-      $sql = "DELETE FROM `Users` WHERE `id`='$this->id'";
+      $sql = "DELETE FROM `User` WHERE `id`='$this->id'";
       $result=$connection->query($sql);
       if($result==true)
       {
@@ -96,7 +96,7 @@ class User
 
   static public function loadUserById(mysqli $connection, $id)
   {
-    $sql = "SELECT * FROM `Users` WHERE `id`=$id";
+    $sql = "SELECT * FROM `User` WHERE `id`=$id";
     $result = $connection->query($sql);
 
     if ($result == true && $result->num_rows==1)
@@ -106,7 +106,7 @@ class User
       $loadedUser = new User;
       $loadedUser->username = $row['username'];
       $loadedUser->email = $row['email'];
-      $loadedUser->hashedPassword = $row['hashed_password'];
+      $loadedUser->hashedPassword = $row['hashedPassword'];
       $loadedUser->id = $row['id'];
 
       return $loadedUser;
@@ -116,7 +116,7 @@ class User
 
   static public function loadUserByEmail(mysqli $connection, $email)
   {
-    $sql = "SELECT * FROM `Users` WHERE `email`= $email";
+    $sql = "SELECT * FROM `User` WHERE `email`= $email";
     $result = $connection->query($sql);
 
     if ($result == true && $result->num_rows==1)
@@ -126,7 +126,7 @@ class User
       $loadedUser = new User;
       $loadedUser->username = $row['username'];
       $loadedUser->email = $row['email'];
-      $loadedUser->hashedPassword = $row['hashed_password'];
+      $loadedUser->hashedPassword = $row['hashedPassword'];
       $loadedUser->id = $row['id'];
 
       return $loadedUser;
@@ -137,7 +137,7 @@ class User
   static public function loadAllUsers(mysqli $connection)
   {
     $usersArr=[];
-    $sql = "SELECT * FROM `Users`";
+    $sql = "SELECT * FROM `User`";
     $result = $connection->query($sql);
 
     if ($result==true && $result->num_rows != 0)
@@ -148,7 +148,7 @@ class User
         $user->id = $row['id'];
         $user->username = $row['username'];
         $user->email = $row['email'];
-        $user->hashedPassword = $row['hashed_password'];
+        $user->hashedPassword = $row['hashedPassword'];
 
         $usersArr[]=$user;
       }

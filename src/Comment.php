@@ -2,11 +2,12 @@
 
 require __DIR__ . "/../conn.php";
 
-class Tweet
+class Comment
 {
 
   private $id;
   private $userId;
+  private $tweetId;
   private $text;
   private $creationDate;
 
@@ -14,6 +15,7 @@ class Tweet
   {
     $this->id = -1;
     $this->userId = '';
+    $this->tweetId = '';
     $this->text = '';
     $this->creationDate = '';
   }
