@@ -50,9 +50,10 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
 <body>
 
   <h1>Witaj na głównej stronie!</h1>
+  <h3><a href='userMessages'>Zobacz swoje wiadomości</a></h3>
   <h3>Stwórz nowy Tweet:</h3>
   <form action="" method="post">
-  Tweetnij! <input type="text" name="tweetText"><br>
+  Tweetnij! <input type="text" maxlength="140" height="200" name="tweetText"><br>
   <input type="submit" value="Submit">
   </form>
 

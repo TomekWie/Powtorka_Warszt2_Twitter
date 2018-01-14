@@ -37,7 +37,10 @@ require __DIR__ . "/src/User.php";
 
   $user = User::loadUserById($conn, $_GET['userId']);
   $username = $user->getUsername();
+  $userId = $user->getId();
+
   echo "<h3>Tweety autorstwa $username </h3> ";
+  echo "<h3>Wyślij wiadomość do <a href='sendMessage.php?userId=$userId'> $username </a></h3> ";
 
   $allTweetsOfUser = Tweet::loadAllTweetsByUserId($conn, $_GET['userId']);
 

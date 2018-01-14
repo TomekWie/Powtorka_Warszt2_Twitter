@@ -26,6 +26,9 @@ class Comment
   public function getUserId()
   {return $this->userId;}
 
+  public function getTweetId()
+  {return $this->tweetId;}
+
   public function getText()
   {return $this->text;}
 
@@ -34,6 +37,9 @@ class Comment
 
   public function setUserId($userId)
   {$this->userId = $userId;}
+
+  public function setTweetId($userId)
+  {$this->tweetId = $tweetId;}
 
   public function setText($text)
   {$this->text = $text;}
@@ -45,7 +51,7 @@ class Comment
   {
     if($this->id == -1)
     {
-      $sql = "INSERT INTO Tweet (userId, text, creationDate) VALUES ('$this->userId', '$this->text', '$this->creationDate')";
+      $sql = "INSERT INTO Comment (userId, tweetId, text, creationDate) VALUES ('$this->userId', '$this->tweetId', '$this->text', '$this->creationDate')";
 
       $result = $conn->query($sql);
       if ($result==true)
@@ -58,78 +64,45 @@ class Comment
     return false;
   }
 
-  static public function loadTweetById (mysqli $conn, $id)
+  static public function loadCommentById (mysqli $conn, $id)
   {
-    $sql = "SELECT * FROM Tweet WHERE id = $id";
+    $sql = "SELECT * FROM Comment WHERE id = $id";
     $result = $conn->query($sql);
     if ($result==true && $result->num_rows == 1)
     {
       $row = $result->fetch_assoc();
-      $tweet = new Tweet();
-      $tweet->id = $row['id'];
-      $tweet->setText($row['text']);
-      $tweet->setUserId($row['userId']);
-      $tweet->setCreationDate($row['creationDate']);
+      $comment = new Comment();
+      $comment->id = $row['id'];
+      $comment->setText($row['text']);
+      $comment->setUserId($row['userId']);
+      $comment->setTweetId($row['tweetId']);
+      $comment->setCreationDate($row['creationDate']);
 
-      return $tweet;
+      return $comment;
     }
     return null;
   }
 
-  static public function loadAllTweetsByUserId(mysqli $conn, $userId)
+  static public function loadAllCommentsByTweetId(mysqli $conn, $tweetId)
   {
-    $userTweets = [];
-    $sql = "SELECT * FROM Tweet WHERE userId = $userId ORDER BY creationDate DESC";
+    $tweetComments = [];
+    $sql = "SELECT * FROM Comment WHERE postId = $tweetId ORDER BY creationDate DESC";
     $result = $conn->query($sql);
 
     if ($result==true && $result->num_rows != 0)
     {
       foreach ($result as $row)
       {
-        $tweet= new Tweet();
-        $tweet->id = $row['id'];
-        $tweet->setText($row['text']);
-        $tweet->setUserId($row['userId']);
-        $tweet->setCreationDate($row['creationDate']);
+        $comment= new Comment();
+        $comment->id = $row['id'];
+        $comment->setText($row['text']);
+        $comment->setUserId($row['userId']);
+        $comment->setTweetId($row['tweetId']);
+        $comment->setCreationDate($row['creationDate']);
 
-        $userTweets[] = $tweet;
+        $tweetComments[] = $comment;
       }
     }
-    return $userTweets;
-  }
-
-  static public function loadAllTweets(mysqli $conn)
-  {
-    $sql = "SELECT * FROM Tweet ORDER BY creationDate DESC";
-    $result = $conn->query($sql);
-    $allTweets = [];
-
-    if ($result ==  true && $result->num_rows != 0)
-    {
-      foreach ($result as $row)
-      {
-        $tweet = new Tweet();
-        $tweet->id = $row['id'];
-        $tweet->userId = $row['userId'];
-        $tweet->text = $row['text'];
-        $tweet->creationDate = $row['creationDate'];
-
-        $allTweets[] = $tweet;
-      }
-    }
-    return $allTweets;
+    return $tweetComments;
   }
 }
-
-// $tweet = new Tweet();
-// $tweet->setUserId(11);
-// $tweet->setText('#ŻyjeSięRaz!');
-// $tweet->setCreationDate(date("Y-m-d H:i:s"));
-// // var_dump($tweet);
-// // echo $tweet->getId();
-// // echo $tweet->getUserId();
-// // echo $tweet->getText();
-// // echo $tweet->getCreationDate();
-// $tweet->saveToDB($conn);
-
-//var_dump(Tweet::loadAllTweets($conn));

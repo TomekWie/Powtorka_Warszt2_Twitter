@@ -12,15 +12,14 @@ if($_SERVER['REQUEST_METHOD']=='POST')
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $sql = "SELECT * FROM Users
+    $sql = "SELECT * FROM User
             WHERE email='$email'";
 
-            echo "KKK";
     $result = $conn->query($sql);
     if ($result == true)
     {
       $user=$result->fetch_assoc();
-      $hash=$user['hashed_password'];
+      $hash=$user['hashedPassword'];
       if (password_verify($password,$hash))
       {
         $loggedUserId = $user['id'];
@@ -35,11 +34,9 @@ if($_SERVER['REQUEST_METHOD']=='POST')
     $lackOfPass = "Podaj swój email i hasło <br>";
   }
 }
-
 ?>
 
 <!DOCTYPE html>
-
 <html>
 <head>
   <title>Twitter - login page</title>
