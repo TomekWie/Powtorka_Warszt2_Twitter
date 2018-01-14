@@ -69,6 +69,8 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
   <input type="submit" value="Submit">
   </form>
 
+  Powrót do strony <a href='index.php'> głownej </a>;
+  Wyloguj się klikając <a href='logout.php'> tutaj </a>;
 </body>
 
 </html>

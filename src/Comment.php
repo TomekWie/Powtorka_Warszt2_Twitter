@@ -38,7 +38,7 @@ class Comment
   public function setUserId($userId)
   {$this->userId = $userId;}
 
-  public function setTweetId($userId)
+  public function setTweetId($tweetId)
   {$this->tweetId = $tweetId;}
 
   public function setText($text)

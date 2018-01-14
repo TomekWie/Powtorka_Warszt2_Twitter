@@ -34,6 +34,9 @@ require __DIR__ . "/src/Message.php";
 
   <?php
 
+  echo "Powrót do strony <a href='index.php'> głownej </a><br>";
+  echo "Wyloguj się klikając <a href='logout.php'> tutaj </a><br>";
+
   $allMessagesWhereUserIsSenderOrReceiver = Message::loadAllMessagesWhereUserIsSenderOrReceiver($conn, $_SESSION['loggedUserId']);
 
   foreach ($allMessagesWhereUserIsSenderOrReceiver as $message)
@@ -45,7 +48,7 @@ require __DIR__ . "/src/Message.php";
     $text = $message->getText();
     $creationDate = $message->getCreationDate();
     $messageId = $message->getId();
-    
+
     echo "Wiadomość od:<a href='singleUser.php?userId=$senderId'> $senderName </a> ";
     echo "Wiadomość do:<a href='singleUser.php?userId=$receiverId'> $receiverName </a> ";
     echo "<div> $text <div>";

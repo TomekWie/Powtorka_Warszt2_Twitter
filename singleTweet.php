@@ -59,6 +59,9 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
   $user= User::loadUserById($conn, $userId);
   $username = $user->getUsername();
 
+  echo "Powrót do strony <a href='index.php'> głownej </a><br>";
+  echo "Wyloguj się klikając <a href='logout.php'> tutaj </a><br>";
+
   echo "Autor: <a href='singleUser.php?userId=$userId'> $username </a>";
   echo "<div> <h2>$text</h2> <div>";
   echo "<div><h3> stworzony: $creationDate <h3></div><hr>";

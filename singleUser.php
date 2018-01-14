@@ -41,6 +41,9 @@ require __DIR__ . "/src/User.php";
 
   echo "<h3>Tweety autorstwa $username </h3> ";
   echo "<h3>Wyślij wiadomość do <a href='sendMessage.php?userId=$userId'> $username </a></h3> ";
+  echo "Powrót do strony <a href='index.php'> głownej </a><br>";
+  echo "Wyloguj się klikając <a href='logout.php'> tutaj </a><br>";
+
 
   $allTweetsOfUser = Tweet::loadAllTweetsByUserId($conn, $_GET['userId']);
 
