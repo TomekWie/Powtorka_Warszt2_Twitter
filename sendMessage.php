@@ -49,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
   <!-- <link rel="stylesheet" href="mystyle.css"> -->
   <meta charset="UTF-8">
   <meta name="description" content="Twitter send message page">
-  <meta name="keywords" content="Tweeter, Tweet">
   <meta name="author" content="Tomasz Wieckowski">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -59,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
   <h3>Wyślij wiadomość do <?php echo "$receiverName" ?>:</h3>
   <form action="" method="post">
   <input type="text"name="messageText"><br>
-  <input type="submit" value="Submit">
+  <input type="submit" value="Wyślij">
   </form>
 
   Zobacz swoje wiadomości klikając <a href='userMessages.php'> tutaj </a><br>

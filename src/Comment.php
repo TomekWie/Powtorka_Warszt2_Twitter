@@ -85,7 +85,7 @@ class Comment
   static public function loadAllCommentsByTweetId(mysqli $conn, $tweetId)
   {
     $tweetComments = [];
-    $sql = "SELECT * FROM Comment WHERE postId = $tweetId ORDER BY creationDate DESC";
+    $sql = "SELECT * FROM Comment WHERE tweetId = $tweetId ORDER BY creationDate ASC";
     $result = $conn->query($sql);
 
     if ($result==true && $result->num_rows != 0)

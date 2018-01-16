@@ -2,20 +2,15 @@
 session_start();
 
 if(!isset($_SESSION['loggedUserId']))
-{
-  header('Location: login.php');
-}
+{ header('Location: login.php'); }
 
 require __DIR__ . "/conn.php";
 require __DIR__ . "/src/User.php";
 require __DIR__ . "/src/Message.php";
-
-
 ?>
 
 <!DOCTYPE html>
 <html>
-
 <head>
   <title>Twitter - all messages page</title>
   <style>
@@ -33,11 +28,12 @@ require __DIR__ . "/src/Message.php";
 <body>
 
   <?php
-
   echo "Powrót do strony <a href='index.php'> głownej </a><br>";
   echo "Wyloguj się klikając <a href='logout.php'> tutaj </a><br>";
+  echo "<h4>Twoje wiadomości:</h4> ";
 
-  $allMessagesWhereUserIsSenderOrReceiver = Message::loadAllMessagesWhereUserIsSenderOrReceiver($conn, $_SESSION['loggedUserId']);
+  $allMessagesWhereUserIsSenderOrReceiver =
+  Message::loadAllMessagesWhereUserIsSenderOrReceiver($conn, $_SESSION['loggedUserId']);
 
   foreach ($allMessagesWhereUserIsSenderOrReceiver as $message)
   {
@@ -48,14 +44,20 @@ require __DIR__ . "/src/Message.php";
     $text = $message->getText();
     $creationDate = $message->getCreationDate();
     $messageId = $message->getId();
+    $hasBeenRead = $message->getHasBeenRead();
+    $shortText = substr($text,0,30);
 
-    echo "Wiadomość od:<a href='singleUser.php?userId=$senderId'> $senderName </a> ";
-    echo "Wiadomość do:<a href='singleUser.php?userId=$receiverId'> $receiverName </a> ";
-    echo "<div> $text <div>";
-    echo "<div> $creationDate <div><hr>";
+    echo $_SESSION['loggedUserId']==$senderId ?
+    "Wiadomość do:<a href='singleUser.php?userId=$receiverId'> $receiverName </a> " :
+    "Wiadomość od:<a href='singleUser.php?userId=$senderId'> $senderName </a> ";
+
+    echo strlen($text)>30 ? "<div> $shortText... <div>" : "<div> $text <div>";
+    echo $hasBeenRead == 1 ? "<div> wiadość odczytana <div>" : "<div> wiadomość nie odczytana <div>";
+    echo "<div> $creationDate <div>";
+    echo "<div> <a href='singleMessage.php?messageId=$messageId'>
+    Zobacz więcej...</a><div><hr>";
   }
   ?>
 
 </body>
-
 </html>

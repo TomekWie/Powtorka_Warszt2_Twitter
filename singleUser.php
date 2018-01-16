@@ -1,22 +1,17 @@
-
 <?php
 session_start();
 
 if(!isset($_SESSION['loggedUserId']))
-{
-  header('Location: login.php');
-}
+{ header('Location: login.php'); }
 
 require __DIR__ . "/conn.php";
 require __DIR__ . "/src/Tweet.php";
 require __DIR__ . "/src/User.php";
 require __DIR__ . "/src/Comment.php";
-
 ?>
 
 <!DOCTYPE html>
 <html>
-
 <head>
   <title>Twitter - page of single user </title>
   <style>
@@ -34,16 +29,15 @@ require __DIR__ . "/src/Comment.php";
 <body>
 
   <?php
-
   $user = User::loadUserById($conn, $_GET['userId']);
   $username = $user->getUsername();
   $userId = $user->getId();
 
-  echo "<h3>Tweety autorstwa $username </h3> ";
-  echo "<h3>Wyślij wiadomość do <a href='sendMessage.php?userId=$userId'> $username </a></h3> ";
-  echo "Powrót do strony <a href='index.php'> głownej </a><br>";
-  echo "Wyloguj się klikając <a href='logout.php'> tutaj </a><br>";
+  echo "Powrót do strony <a href='index.php'>głownej</a><br>";
+  echo "Wyloguj się klikając <a href='logout.php'>tutaj</a><br>";
 
+  echo "<h3>Tweety autorstwa $username
+        (wyślij <a href='sendMessage.php?userId=$userId'> wiadomość </a>) </h3> ";
   $allTweetsOfUser = Tweet::loadAllTweetsByUserId($conn, $_GET['userId']);
 
   foreach ($allTweetsOfUser as $singleTweet)
@@ -51,15 +45,15 @@ require __DIR__ . "/src/Comment.php";
     $userId = $singleTweet->getUserId();
     $text = $singleTweet->getText();
     $tweetId = $singleTweet->getId();
+    $tweetCreationDate = $singleTweet->getCreationDate();
     $countAllCommentsOnTweetId = Comment::countAllCommentsOnTweetId($conn, $tweetId);
 
-    echo "<div> $text <div>";
+    echo "<div> Tweet z $tweetCreationDate <div>";
+    echo "<div><b> $text </b><div>";
     echo "<div> Ten tweet ma $countAllCommentsOnTweetId komentarzy <div>";
     echo "<div> <a href='singleTweet.php?tweetId=$tweetId'>Zobacz więcej</a></div><hr>";
-
   }
   ?>
 
 </body>
-
 </html>

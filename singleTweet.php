@@ -2,9 +2,7 @@
 session_start();
 
 if(!isset($_SESSION['loggedUserId']))
-{
-  header('Location: login.php');
-}
+{ header('Location: login.php'); }
 
 require __DIR__ . "/conn.php";
 require __DIR__ . "/src/Tweet.php";
@@ -20,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
     $newComment->setTweetId($_GET['tweetId']);
     $newComment->setText($_POST['commentText']);
     $newComment->setCreationDate(date("Y-m-d H:i:s"));
-
     $newComment->saveToDB($conn);
   }
   else
@@ -28,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
     echo "Pustych komentarzy nie puszczamy :) <br>";
   }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -42,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
   <!-- <link rel="stylesheet" href="mystyle.css"> -->
   <meta charset="UTF-8">
   <meta name="description" content="Twitter single tweet page">
-  <meta name="keywords" content="Tweeter, Tweet">
   <meta name="author" content="Tomasz Wieckowski">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -60,31 +55,33 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
 
   echo "Powrót do strony <a href='index.php'> głownej </a><br>";
   echo "Wyloguj się klikając <a href='logout.php'> tutaj </a><br>";
-
   echo "Autor: <a href='singleUser.php?userId=$userId'> $username </a>";
   echo "<div> <h2>$text</h2> <div>";
-  echo "<div><h3> stworzony: $creationDate <h3></div><hr>";
+  echo "<div> Tweet stworzony: $creationDate </div>";
   ?>
 
   <h3>Napisz komentarz:</h3>
   <form action="" method="post">
   <input type="text" maxlength="60" height="200" name="commentText"><br>
-  <input type="submit" value="Submit">
+  <input type="submit" value="Wyślij">
   </form>
 
   <?php
   $allCommentsOfSingleTweet = Comment::loadAllCommentsByTweetId($conn, $_GET['tweetId']);
+
+  echo "<hr><h3>Komentarze:</h3>";
 
   foreach ($allCommentsOfSingleTweet as $singleComment)
   {
     $userId = $singleComment->getUserId();
     $text = $singleComment->getText();
     $commentId = $singleComment->getId();
+    $creationDate = $singleComment->getCreationDate();
     $user = User::loadUserById($conn, $userId);
     $username = $user->getUsername();
 
-    echo "<h3>Autor:<a href='singleUser.php?userId=$userId'> $username </a></h3> ";
-    echo "<div> $text <div><hr>";
+    echo "Autor: <a href='singleUser.php?userId=$userId'> $username </a>";
+    echo "<div><b> $text </b><div>";
     echo "<div> stworzony: $creationDate </div><hr>";
   }
   ?>

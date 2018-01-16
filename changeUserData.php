@@ -9,6 +9,7 @@ require __DIR__ . "/src/User.php";
 
 $loggedUserId = $_SESSION['loggedUserId'];
 $loggedUser = User::loadUserById($conn, $loggedUserId);
+$email = $loggedUser->getEmail();
 
 if ($_SERVER['REQUEST_METHOD']=='POST')
 {
@@ -73,9 +74,12 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
       poniżej możesz zmienić swoje dane</h2>
 
   <form action="" method="post">
-  Zmień swój adres email na: <input type="text" maxlength="30" name="email"><br>
-  Zmień swoje hasło na: <input type="password" maxlength="40"  name="pass1"><br>
-  Powtórz swoje nowe hasło:  <input type="password" maxlength="40"  name="pass2"><br>
+  Zmień swój adres email na:
+  <input type="text" placeholder="<?php echo $email; ?>"  maxlength="30" name="email"><br>
+  Zmień swoje hasło na:
+  <input type="password" maxlength="40"  name="pass1"><br>
+  Powtórz swoje nowe hasło:
+  <input type="password" maxlength="40"  name="pass2"><br>
   <input type="submit" value="Wyślij"></form>
 
   <div style="color:yellow">

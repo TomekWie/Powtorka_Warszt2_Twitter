@@ -7,6 +7,7 @@ if(!isset($_SESSION['loggedUserId']))
 require __DIR__ . "/conn.php";
 require __DIR__ . "/src/Tweet.php";
 require __DIR__ . "/src/User.php";
+require __DIR__ . "/src/Comment.php";
 
 if ($_SERVER['REQUEST_METHOD']=='POST')
 {
@@ -67,9 +68,12 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
     $tweetId = $singleTweet->getId();
     $user = User::loadUserById($conn, $userId);
     $username = $user->getUsername();
+    $countAllCommentsOnTweetId = Comment::countAllCommentsOnTweetId($conn, $tweetId);
 
     echo "<div>Autor:<a href='singleUser.php?userId=$userId'> $username </a><div>";
-    echo "$text <a href='singleTweet.php?tweetId=$tweetId'>więcej...</a><hr>";
+    echo "<b>$text</b><br>";
+    echo "<div> Ten tweet ma $countAllCommentsOnTweetId komentarzy. <a href='singleTweet.php?tweetId=$tweetId'><br>
+    Zobacz więcej...</a><div><hr>";
   }
   ?>
 

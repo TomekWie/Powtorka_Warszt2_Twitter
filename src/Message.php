@@ -68,6 +68,21 @@ class Message
         return true;
       }
     }
+    else
+    {
+      $sql = "UPDATE `Message`
+              SET `senderId`='$this->senderId',
+                  `receiverId`='$this->receiverId',
+                  `hasBeenRead`='$this->hasBeenRead'
+              WHERE `id`='$this->id'";
+
+      $result=$conn->query($sql);
+      if($result==true)
+      {
+        return true;
+      }
+      echo "Błąd podczas update'u wiadomości o id $this->id: " . $conn->error;
+    }
     echo "Błąd " . $conn->error;
     return false;
   }
@@ -111,7 +126,7 @@ class Message
       $message->setSenderId($row['senderId']);
       $message->setReceiverId($row['receiverId']);
       $message->setCreationDate($row['creationDate']);
-      $message->hasBeenRead($row['hasBeenRead']);
+      $message->setHasBeenRead($row['hasBeenRead']);
 
       return $message;
     }
