@@ -1,26 +1,22 @@
-
 <?php
 session_start();
 
 if(!isset($_SESSION['loggedUserId']))
-{
-  header('Location: login.php');
-}
+{ header('Location: login.php'); }
 
 require __DIR__ . "/conn.php";
 require __DIR__ . "/src/User.php";
 require __DIR__ . "/src/Message.php";
 
-  $receiverId = $_GET['userId'];
+$receiverId = $_GET['userId'];
+if($receiverId == $_SESSION['loggedUserId'])
+{
+  die("Nie możesz wysłac wiadomości do samego siebie :( <br>
+  <a href='index.php'>Wróć do strony głównej</a>");
+}
 
-  if($receiverId == $_SESSION['loggedUserId'])
-  {
-    die("Nie możesz wysłac wiadomości do samego siebie :( <br>
-        <a href='index.php'>Wróć do strony głównej</a>");
-  }
-
-  $receiver = User::loadUserById($conn, $receiverId);
-  $receiverName = $receiver->getUsername();
+$receiver = User::loadUserById($conn, $receiverId);
+$receiverName = $receiver->getUsername();
 
 if ($_SERVER['REQUEST_METHOD']=='POST')
 {
@@ -34,8 +30,6 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
     $newMessage->setHasBeenRead(0);
     $newMessage->saveToDB($conn);
     echo "Wiadomość została wysłana :) <br>";
-    echo "Zobacz swoje wiadomości klikając <a href='userMessages.php'> tutaj </a>";
-    echo "lub wróc do <a href='index.php'> strony głównej </a>";
   }
   else
   {
@@ -46,7 +40,6 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
 
 <!DOCTYPE html>
 <html>
-
 <head>
   <title>Twitter - send message page</title>
   <style>
@@ -69,8 +62,9 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
   <input type="submit" value="Submit">
   </form>
 
-  Powrót do strony <a href='index.php'> głownej </a>;
-  Wyloguj się klikając <a href='logout.php'> tutaj </a>;
-</body>
+  Zobacz swoje wiadomości klikając <a href='userMessages.php'> tutaj </a><br>
+  Wróć do strony głównej klikając <a href='index.php'> tutaj </a><br>
+  Wyloguj się klikając <a href='logout.php'> tutaj </a><br>
 
+</body>
 </html>

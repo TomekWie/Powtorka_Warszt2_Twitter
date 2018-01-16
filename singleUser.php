@@ -10,6 +10,7 @@ if(!isset($_SESSION['loggedUserId']))
 require __DIR__ . "/conn.php";
 require __DIR__ . "/src/Tweet.php";
 require __DIR__ . "/src/User.php";
+require __DIR__ . "/src/Comment.php";
 
 ?>
 
@@ -34,7 +35,6 @@ require __DIR__ . "/src/User.php";
 
   <?php
 
-
   $user = User::loadUserById($conn, $_GET['userId']);
   $username = $user->getUsername();
   $userId = $user->getId();
@@ -44,7 +44,6 @@ require __DIR__ . "/src/User.php";
   echo "Powrót do strony <a href='index.php'> głownej </a><br>";
   echo "Wyloguj się klikając <a href='logout.php'> tutaj </a><br>";
 
-
   $allTweetsOfUser = Tweet::loadAllTweetsByUserId($conn, $_GET['userId']);
 
   foreach ($allTweetsOfUser as $singleTweet)
@@ -52,9 +51,12 @@ require __DIR__ . "/src/User.php";
     $userId = $singleTweet->getUserId();
     $text = $singleTweet->getText();
     $tweetId = $singleTweet->getId();
+    $countAllCommentsOnTweetId = Comment::countAllCommentsOnTweetId($conn, $tweetId);
 
     echo "<div> $text <div>";
+    echo "<div> Ten tweet ma $countAllCommentsOnTweetId komentarzy <div>";
     echo "<div> <a href='singleTweet.php?tweetId=$tweetId'>Zobacz więcej</a></div><hr>";
+
   }
   ?>
 

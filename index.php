@@ -1,12 +1,8 @@
-
-
 <?php
 session_start();
 
 if(!isset($_SESSION['loggedUserId']))
-{
-  header('Location: login.php');
-}
+{ header('Location: login.php'); }
 
 require __DIR__ . "/conn.php";
 require __DIR__ . "/src/Tweet.php";
@@ -20,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
     $newTweet->setUserId($_SESSION['loggedUserId']);
     $newTweet->setText($_POST['tweetText']);
     $newTweet->setCreationDate(date("Y-m-d H:i:s"));
-
     $newTweet->saveToDB($conn);
   }
   else
@@ -48,18 +43,21 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
 </head>
 
 <body>
-  Wyloguj się klikając <a href='logout.php'> tutaj </a>
 
   <h1>Witaj na głównej stronie!</h1>
-  <h3><a href='userMessages.php'>Zobacz swoje wiadomości</a></h3>
+  Wyloguj się klikając <a href='logout.php'> tutaj </a><br>
+  Zmień swoje dane klikając <a href='changeUserData.php'> tutaj </a><br>
+  Usuń swój profil i wszystkie swoje dane z  naszego serwisu klikając
+  <a href='deleteUser.php'> tutaj </a><br>
+  Zobacz swoje wiadomości klikając <a href='userMessages.php'>tutaj</a><br>
+
   <h3>Stwórz nowy Tweet:</h3>
+
   <form action="" method="post">
-  Tweetnij! <input type="text" maxlength="140" height="200" name="tweetText"><br>
-  <input type="submit" value="Submit">
-  </form>
+  <input type="text" maxlength="140" name="tweetText">
+  <input type="submit" value="Tweetnij!"></form><br><hr>
 
   <?php
-
   $allTweets = Tweet::loadAllTweets($conn);
 
   foreach ($allTweets as $singleTweet)
@@ -70,12 +68,10 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
     $user = User::loadUserById($conn, $userId);
     $username = $user->getUsername();
 
-    echo "<h3>Autor:<a href='singleUser.php?userId=$userId'> $username </a></h3> ";
-    echo "<div> $text <div>";
-    echo "<div> <a href='singleTweet.php?tweetId=$tweetId'>Zobacz więcej</a></div><hr>";
+    echo "<div>Autor:<a href='singleUser.php?userId=$userId'> $username </a><div>";
+    echo "$text <a href='singleTweet.php?tweetId=$tweetId'>więcej...</a><hr>";
   }
   ?>
 
 </body>
-
 </html>

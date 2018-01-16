@@ -1,18 +1,13 @@
 <?php
-
 session_start();
 
 require __DIR__ . "/conn.php";
 require __DIR__ . "/src/User.php";
 
-
-var_dump($_POST);
-
 if ($_SERVER['REQUEST_METHOD']=='POST')
 {
   if ($_POST['username']!='' && $_POST['email']!='' && $_POST['pass1']!='' && $_POST['pass2']!='')
   {
-
     if(User::loadUserByEmail($conn, $_POST['email']))//sprawdzamy czy email jest w bazie
     {
       $duplicateEmail = "Użytkownik o takim emailu jest już zarejestrownay. Podaj inny.";
@@ -28,7 +23,6 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
       $newUser->setHashedPassword($_POST['pass1']);
       $newUser->setUsername($_POST['username']);
       $newUser->saveToDB($conn);
-
       $loggedUserId = $conn->insert_id;
       $_SESSION["loggedUserId"] = $loggedUserId;
       header('Location: index.php');
@@ -39,11 +33,9 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
     $lackOfData="Wypełnij wszystkie dane niezbędne do rejestracji";
   }
 }
-
 ?>
 
 <!DOCTYPE HTML>
-
 <html>
 <head>
   <title>Twitter - registration page</title>
@@ -82,6 +74,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
   ?>
   </div>
 
-</body>
+  <br> Wróć do strony logowania klikając <a href='login.php'>tutaj</a><br>
 
+</body>
 </html>

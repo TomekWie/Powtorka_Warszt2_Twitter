@@ -4,7 +4,6 @@ require __DIR__ . "/../conn.php";
 
 class Comment
 {
-
   private $id;
   private $userId;
   private $tweetId;
@@ -104,5 +103,17 @@ class Comment
       }
     }
     return $tweetComments;
+  }
+
+  static public function countAllCommentsOnTweetId($conn, $tweetId)
+  {
+    $sql = "SELECT COUNT(id) AS coms FROM Comment WHERE tweetId = $tweetId";
+    $result = $conn->query($sql);
+    if ($result==true)
+    {
+      $resultAssoc =  $result->fetch_assoc();
+      return $resultAssoc['coms'];
+    }
+    return null;
   }
 }

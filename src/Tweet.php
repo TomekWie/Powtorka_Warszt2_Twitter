@@ -4,7 +4,6 @@ require __DIR__ . "/../conn.php";
 
 class Tweet
 {
-
   private $id;
   private $userId;
   private $text;
@@ -39,6 +38,7 @@ class Tweet
   public function setCreationDate($creationDate)
   {$this->creationDate = $creationDate;}
 
+
   public function saveToDB(mysqli $conn)
   {
     if($this->id == -1)
@@ -56,6 +56,7 @@ class Tweet
     return false;
   }
 
+
   static public function loadTweetById (mysqli $conn, $id)
   {
     $sql = "SELECT * FROM Tweet WHERE id = $id";
@@ -68,11 +69,11 @@ class Tweet
       $tweet->setText($row['text']);
       $tweet->setUserId($row['userId']);
       $tweet->setCreationDate($row['creationDate']);
-
       return $tweet;
     }
     return null;
   }
+
 
   static public function loadAllTweetsByUserId(mysqli $conn, $userId)
   {
@@ -96,6 +97,7 @@ class Tweet
     return $userTweets;
   }
 
+
   static public function loadAllTweets(mysqli $conn)
   {
     $sql = "SELECT * FROM Tweet ORDER BY creationDate DESC";
@@ -111,23 +113,9 @@ class Tweet
         $tweet->userId = $row['userId'];
         $tweet->text = $row['text'];
         $tweet->creationDate = $row['creationDate'];
-
         $allTweets[] = $tweet;
       }
     }
     return $allTweets;
   }
 }
-
-// $tweet = new Tweet();
-// $tweet->setUserId(11);
-// $tweet->setText('#ŻyjeSięRaz!');
-// $tweet->setCreationDate(date("Y-m-d H:i:s"));
-// // var_dump($tweet);
-// // echo $tweet->getId();
-// // echo $tweet->getUserId();
-// // echo $tweet->getText();
-// // echo $tweet->getCreationDate();
-// $tweet->saveToDB($conn);
-
-//var_dump(Tweet::loadAllTweets($conn));

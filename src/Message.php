@@ -54,6 +54,7 @@ class Message
   public function setHasBeenRead($hasBeenRead)
   {$this->hasBeenRead = $hasBeenRead;}
 
+
   public function saveToDB(mysqli $conn)
   {
     if($this->id == -1)
@@ -70,6 +71,7 @@ class Message
     echo "Błąd " . $conn->error;
     return false;
   }
+
 
   static public function loadAllMessagesWhereUserIsSenderOrReceiver(mysqli $conn, $userId)
   {
@@ -116,6 +118,7 @@ class Message
     return null;
   }
 
+
   static public function loadAllMessagesBySenderId(mysqli $conn, $senderId)
   {
     $sentMessages = [];
@@ -139,6 +142,7 @@ class Message
     }
     return $sentMessages;
   }
+
 
   static public function loadAllMessagesByReceiverId(mysqli $conn, $receiverId)
   {

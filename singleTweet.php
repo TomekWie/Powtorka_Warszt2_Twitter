@@ -50,7 +50,6 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
 <body>
 
   <?php
-
   $singleTweet = Tweet::loadTweetById($conn, $_GET['tweetId']);
 
   $userId = $singleTweet->getUserId();
@@ -65,9 +64,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
   echo "Autor: <a href='singleUser.php?userId=$userId'> $username </a>";
   echo "<div> <h2>$text</h2> <div>";
   echo "<div><h3> stworzony: $creationDate <h3></div><hr>";
-
   ?>
-
 
   <h3>Napisz komentarz:</h3>
   <form action="" method="post">
@@ -75,9 +72,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
   <input type="submit" value="Submit">
   </form>
 
-
   <?php
-
   $allCommentsOfSingleTweet = Comment::loadAllCommentsByTweetId($conn, $_GET['tweetId']);
 
   foreach ($allCommentsOfSingleTweet as $singleComment)
@@ -92,7 +87,6 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
     echo "<div> $text <div><hr>";
     echo "<div> stworzony: $creationDate </div><hr>";
   }
-
   ?>
 
 </body>

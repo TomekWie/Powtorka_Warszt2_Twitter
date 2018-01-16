@@ -2,7 +2,6 @@
 session_start();
 
 require __DIR__ . "/conn.php";
-require __DIR__ . "/src/Tweet.php";
 require __DIR__ . "/src/User.php";
 
 if($_SERVER['REQUEST_METHOD']=='POST')
@@ -11,16 +10,13 @@ if($_SERVER['REQUEST_METHOD']=='POST')
   {
     $email = $_POST['email'];
     $password = $_POST['password'];
-
-    $sql = "SELECT * FROM User
-            WHERE email='$email'";
-
+    $sql = "SELECT * FROM User WHERE email='$email'";
     $result = $conn->query($sql);
     if ($result == true)
     {
       $user=$result->fetch_assoc();
       $hash=$user['hashedPassword'];
-      if (password_verify($password,$hash))
+      if (password_verify($password, $hash))
       {
         $loggedUserId = $user['id'];
         $_SESSION["loggedUserId"] = $loggedUserId;
@@ -59,7 +55,7 @@ if($_SERVER['REQUEST_METHOD']=='POST')
   <form action="" method="post">
   Podaj swój email <input type="email" name="email"><br>
   Podaj swoje hasło <input type="password" name="password"><br>
-  <input type="submit" value="Submit">
+  <input type="submit" value="Wyślij">
   </form><br>
 
   <div style="color:yellow">
@@ -75,5 +71,4 @@ if($_SERVER['REQUEST_METHOD']=='POST')
   Zarajestru się klikając <a href='reg.php'> tutaj </a>
 
 </body>
-
 </html>

@@ -29,7 +29,6 @@ class User
   public function getEmail()
   {return $this->email;}
 
-
   public function setUsername($username)
   {$this->username = $username;}
 
@@ -40,23 +39,22 @@ class User
   {$this->email = $email;}
 
 
-  public function saveToDB(mysqli $connection)
+  public function saveToDB(mysqli $conn)
   {
     if($this->id == -1)
     {
       $sql = "INSERT INTO `User` (`username`, `hashedPassword`, `email`)
       VALUES ('$this->username', '$this->hashedPassword', '$this->email')";
 
-      $result = $connection->query($sql);
-
+      $result = $conn->query($sql);
       if ($result == true)
       {
-        $this->id = $connection->insert_id;
+        $this->id = $conn->insert_id;
         return true;
       }
       else
       {
-        echo "Błąd podczas zapisywania nowego usera do bazy: " . $connection->error;
+        echo "Błąd podczas zapisywania nowego usera do bazy: " . $conn->error;
       }
     }
     else
@@ -67,23 +65,23 @@ class User
                   `hashedPassword`='$this->hashedPassword'
               WHERE `id`='$this->id'";
 
-      $result=$connection->query($sql);
-
+      $result=$conn->query($sql);
       if($result==true)
       {
         return true;
       }
-      echo "Błąd podczas update'u usera o id $id: " . $connection->error;
+      echo "Błąd podczas update'u usera o id $id: " . $conn->error;
     }
     return false;
   }
 
-  public function delete(mysqli $connection)
+
+  public function delete(mysqli $conn)
   {
     if ($this->id != -1)
     {
       $sql = "DELETE FROM `User` WHERE `id`='$this->id'";
-      $result=$connection->query($sql);
+      $result=$conn->query($sql);
       if($result==true)
       {
         $this->id = -1;
@@ -94,51 +92,66 @@ class User
     return true;
   }
 
-  static public function loadUserById(mysqli $connection, $id)
+
+  static public function deleteUserById(mysqli $conn, $id)
+  {
+    if ($id != -1)
+    {
+      $sql = "DELETE FROM `User` WHERE `id`=$id";
+      $result=$conn->query($sql);
+      if($result==true)
+      {
+        return true;
+      }
+      return false;
+    }
+    return true;
+  }
+
+
+  static public function loadUserById(mysqli $conn, $id)
   {
     $sql = "SELECT * FROM `User` WHERE `id`=$id";
-    $result = $connection->query($sql);
+    $result = $conn->query($sql);
 
     if ($result == true && $result->num_rows==1)
     {
       $row = $result->fetch_assoc();
-
       $loadedUser = new User;
       $loadedUser->username = $row['username'];
       $loadedUser->email = $row['email'];
       $loadedUser->hashedPassword = $row['hashedPassword'];
       $loadedUser->id = $row['id'];
-
       return $loadedUser;
     }
     return null;
   }
 
-  static public function loadUserByEmail(mysqli $connection, $email)
+
+  static public function loadUserByEmail(mysqli $conn, $email)
   {
     $sql = "SELECT * FROM `User` WHERE `email`= $email";
-    $result = $connection->query($sql);
+    $result = $conn->query($sql);
 
     if ($result == true && $result->num_rows==1)
     {
       $row = $result->fetch_assoc();
-
       $loadedUser = new User;
       $loadedUser->username = $row['username'];
       $loadedUser->email = $row['email'];
       $loadedUser->hashedPassword = $row['hashedPassword'];
       $loadedUser->id = $row['id'];
-
       return $loadedUser;
     }
     return null;
   }
 
-  static public function loadAllUsers(mysqli $connection)
+
+  static public function loadAllUsers(mysqli $conn)
   {
     $usersArr=[];
     $sql = "SELECT * FROM `User`";
-    $result = $connection->query($sql);
+    $result = $conn->query($sql);
 
     if ($result==true && $result->num_rows != 0)
     {
@@ -149,16 +162,9 @@ class User
         $user->username = $row['username'];
         $user->email = $row['email'];
         $user->hashedPassword = $row['hashedPassword'];
-
         $usersArr[]=$user;
       }
     }
     return $usersArr;
   }
 }
-
-// $u = new User();
-// $u->setUsername('a');
-// $u->setEmail('a@a');
-// $u->setHashedPassword('aaa');
-// $u->saveToDB($conn);
