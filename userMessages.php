@@ -7,6 +7,8 @@ if(!isset($_SESSION['loggedUserId']))
 require __DIR__ . "/conn.php";
 require __DIR__ . "/src/User.php";
 require __DIR__ . "/src/Message.php";
+
+$loggedUserName = User::loadUserById($conn, $_SESSION['loggedUserId'])->getUsername();
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +32,7 @@ require __DIR__ . "/src/Message.php";
   <?php
   echo "Powrót do strony <a href='index.php'> głownej </a><br>";
   echo "Wyloguj się klikając <a href='logout.php'> tutaj </a><br>";
-  echo "<h4>Twoje wiadomości:</h4> ";
+  echo "<h4>$loggedUserName, oto Twoje wiadomości :</h4> ";
 
   $allMessagesWhereUserIsSenderOrReceiver =
   Message::loadAllMessagesWhereUserIsSenderOrReceiver($conn, $_SESSION['loggedUserId']);
@@ -48,11 +50,20 @@ require __DIR__ . "/src/Message.php";
     $shortText = substr($text,0,30);
 
     echo $_SESSION['loggedUserId']==$senderId ?
-    "Wiadomość do:<a href='singleUser.php?userId=$receiverId'> $receiverName </a> " :
-    "Wiadomość od:<a href='singleUser.php?userId=$senderId'> $senderName </a> ";
+    "Wiadomość do:<a href='singleUser.php?userId=$receiverId'> $receiverName </a><br> " :
+    "Wiadomość od:<a href='singleUser.php?userId=$senderId'> $senderName </a><br> ";
 
-    echo strlen($text)>30 ? "<div> $shortText... <div>" : "<div> $text <div>";
-    echo $hasBeenRead == 1 ? "<div> wiadość odczytana <div>" : "<div> wiadomość nie odczytana <div>";
+    echo strlen($text)>30 ? "<b> $shortText... </b>" : "<b> $text </b>";
+
+    if ($_SESSION['loggedUserId'] == $receiverId)
+    {
+      echo $hasBeenRead == 1 ? " (odczytana) " : " <b> (nie odczytana) </b>";
+    }
+    // else 
+    // {
+    //   echo $hasBeenRead == 1 ? " (odbiorca odczytał) " : " <b> (odbiorca nie odczytał) </b>";
+    // }
+
     echo "<div> $creationDate <div>";
     echo "<div> <a href='singleMessage.php?messageId=$messageId'>
     Zobacz więcej...</a><div><hr>";

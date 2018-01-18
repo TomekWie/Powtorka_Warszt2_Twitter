@@ -29,9 +29,13 @@ require __DIR__ . "/src/Comment.php";
 
   <?php
   $singleMessage = Message::loadMessageById($conn, $_GET['messageId']);
-  $singleMessage->setHasBeenRead(1);
-  $singleMessage->saveToDB($conn);
 
+  if ($singleMessage->getReceiverId() == $_SESSION['loggedUserId'] )
+  {
+    $singleMessage->setHasBeenRead(1);
+    $singleMessage->saveToDB($conn);
+  }
+  
   $senderId = $singleMessage->getSenderId();
   $receiverId = $singleMessage->getReceiverId();
   $senderName = User::loadUserById($conn, $senderId)->getUsername();

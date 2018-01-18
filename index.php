@@ -9,6 +9,8 @@ require __DIR__ . "/src/Tweet.php";
 require __DIR__ . "/src/User.php";
 require __DIR__ . "/src/Comment.php";
 
+$loggedUserName = User::loadUserById($conn, $_SESSION['loggedUserId'])->getUsername();
+
 if ($_SERVER['REQUEST_METHOD']=='POST')
 {
   if ($_POST['tweetText']!='')
@@ -45,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
 
 <body>
 
-  <h1>Witaj na głównej stronie!</h1>
+  <h1> Hej <?php echo "$loggedUserName" ?>! Witaj na głównej stronie !</h1>
   Wyloguj się klikając <a href='logout.php'> tutaj </a><br>
   Zmień swoje dane klikając <a href='changeUserData.php'> tutaj </a><br>
   Usuń swój profil i wszystkie swoje dane z  naszego serwisu klikając
